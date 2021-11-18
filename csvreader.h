@@ -22,9 +22,7 @@ class WorkerCSVReader
 private:
     QFile File;
 public:
-    void openFile(QString FileName);
-
-    bool isOpen();
+    bool openFile(QString FileName);
 
     std::vector<Car> GetVector();
 

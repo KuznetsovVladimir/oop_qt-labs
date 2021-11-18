@@ -10,7 +10,7 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QMessageBox>
-#include "CSVReader.h"
+#include "csvreader.h"
 
 using namespace std;
 
@@ -31,7 +31,7 @@ std::vector<std::string> split(const std::string& str, char delim)
     return tokens;
 }
 
-void WorkerCSVReader::openFile(QString FileName)
+bool WorkerCSVReader::openFile(QString FileName)
     {
         if (FileName.endsWith(".csv"))
             this->File.setFileName(FileName);
@@ -42,17 +42,15 @@ void WorkerCSVReader::openFile(QString FileName)
             msgBox.setText("Файл должен иметь расширение '.csv'");
             msgBox.exec();
         }
-    }
-
-bool WorkerCSVReader::isOpen()
-    {
         if (!File.open(QIODevice::ReadOnly)) return false;
         else return true;
+
     }
+
 
 std::vector<Car> WorkerCSVReader::GetVector()
     {
-        vector<Car> w;
+        vector<Car> Cars;
 
         QTextStream in(&File);
 
@@ -60,16 +58,9 @@ std::vector<Car> WorkerCSVReader::GetVector()
         {
             QString line = in.readLine().toUtf8();
             string str = line.toStdString();
-
-
-            auto v = split(str, ';');
-            Car c;
-            c.pos = stoi(v[0]);
-            c.model = v[1];
-            c.color = static_cast<Car::colors>(stoi(v[2]));
-            c.year =   stoi(v[3]);
-            w.push_back(c);
+            auto slices = split(str, ';');
+            Cars.push_back({ std::stoi(slices[0]), slices[1], static_cast<Car::colors>(std::stoi(slices[2])), std::stoi(slices[3]) });
         }
         File.close();
-        return w;
+        return Cars;
     }

@@ -11,7 +11,7 @@
 #include <QDir>
 #include <QCoreApplication>
 #include <QMessageBox>
-#include "CSVReader.h"
+#include "csvreader.h"
 #include "Car.h"
 
 using namespace std;
@@ -29,14 +29,13 @@ MainWindow::~MainWindow()
 }
 
 
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_OpenFileButton_clicked()
 {
     WorkerCSVReader CSV;
-    CSV.openFile(ui->lineEdit->text());
-    if (CSV.isOpen())
+    if (CSV.openFile(ui->lineEdit->text()))
     {
-        ui->pushButton_2->setEnabled(true);
-        ui->pushButton->setEnabled(false);
+        ui->CloseFileButton->setEnabled(true);
+        ui->OpenFileButton->setEnabled(false);
         ui->lineEdit_2->setEnabled(true);
         ui->radioButton->setEnabled(true);
         ui->radioButton_2->setEnabled(true);
@@ -45,14 +44,14 @@ void MainWindow::on_pushButton_clicked()
         ui->label->setEnabled(false);
         ui->label_2->setEnabled(true);
 
-        vector<Car> w = CSV.GetVector();
-        for (int i = 0; i < w.size(); i++)
+        vector<Car> Cars = CSV.GetVector();
+        for (int i = 0; i < Cars.size(); i++)
         {
             ui->tableWidget->insertRow(i);
-            ui->tableWidget->setItem(i,0,new QTableWidgetItem(QString::number(w[i].pos)));
-            ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::fromStdString(w[i].model)));
-            ui->tableWidget->setItem(i,2,new QTableWidgetItem(w[i].Convert()));
-            ui->tableWidget->setItem(i,3,new QTableWidgetItem(QString::number(w[i].color)));
+            ui->tableWidget->setItem(i,0,new QTableWidgetItem(QString::number(Cars[i].pos)));
+            ui->tableWidget->setItem(i,1,new QTableWidgetItem(QString::fromStdString(Cars[i].model)));
+            ui->tableWidget->setItem(i,2,new QTableWidgetItem(Cars[i].Convert()));
+            ui->tableWidget->setItem(i,3,new QTableWidgetItem(QString::number(Cars[i].color)));
         }
     } else
     {
@@ -88,15 +87,15 @@ void MainWindow::on_lineEdit_2_textChanged(const QString &arg1)
 }
 
 
-void MainWindow::on_pushButton_2_clicked()
+void MainWindow::on_CloseFileButton_clicked()
 {
     while (ui->tableWidget->rowCount() != 0)
         ui->tableWidget->removeRow(0);
 
     ui->lineEdit_2->setText("");
 
-    ui->pushButton_2->setEnabled(false);
-    ui->pushButton->setEnabled(true);
+    ui->CloseFileButton->setEnabled(false);
+    ui->OpenFileButton->setEnabled(true);
     ui->lineEdit_2->setEnabled(false);
     ui->radioButton->setEnabled(false);
     ui->radioButton_2->setEnabled(false);
