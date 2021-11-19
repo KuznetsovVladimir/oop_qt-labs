@@ -1,20 +1,24 @@
 #include <iostream>
 #include <QFile>
+#include <map>
 
 #ifndef CAR_H
 #define CAR_H
+
+enum colors {
+    Black,
+    Blue,
+    Green,
+    Red
+};
+
+colors strToEnum(QString str);
 
 
 struct Car
 {
     int pos;
     std::string model;
-    enum colors {
-        Black,
-        Blue,
-        Green,
-        Red
-    };
     colors color;
     int year;
 

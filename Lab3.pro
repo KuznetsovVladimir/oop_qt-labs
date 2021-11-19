@@ -11,12 +11,14 @@ CONFIG += c++11
 SOURCES += \
     Car.cpp \
     csvreader.cpp \
+    csvwriter.cpp \
     main.cpp \
     mainwindow.cpp
 
 HEADERS += \
     Car.h \
     csvreader.h \
+    csvwriter.h \
     mainwindow.h
 
 FORMS += \

@@ -10,3 +10,12 @@ QString Car::Convert()
         case 3: return ("Red");
     }
 }
+colors strToEnum(QString str){
+    std::map <QString, colors> mapping{
+        {"Black", Black},
+        {"Blue", Blue},
+        {"Green", Green},
+        {"Red", Red}
+    };
+    return mapping[str];
+}

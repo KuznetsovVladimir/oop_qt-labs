@@ -31,7 +31,7 @@ std::vector<std::string> split(const std::string& str, char delim)
     return tokens;
 }
 
-bool WorkerCSVReader::openFile(QString FileName)
+bool CSVReader::openFile(QString FileName)
     {
         if (FileName.endsWith(".csv"))
             this->File.setFileName(FileName);
@@ -48,7 +48,7 @@ bool WorkerCSVReader::openFile(QString FileName)
     }
 
 
-std::vector<Car> WorkerCSVReader::GetVector()
+std::vector<Car> CSVReader::GetVector()
     {
         vector<Car> Cars;
 
@@ -59,7 +59,7 @@ std::vector<Car> WorkerCSVReader::GetVector()
             QString line = in.readLine().toUtf8();
             string str = line.toStdString();
             auto slices = split(str, ';');
-            Cars.push_back({ std::stoi(slices[0]), slices[1], static_cast<Car::colors>(std::stoi(slices[2])), std::stoi(slices[3]) });
+            Cars.push_back({ std::stoi(slices[0]), slices[1], static_cast<colors>(std::stoi(slices[2])), std::stoi(slices[3]) });
         }
         File.close();
         return Cars;

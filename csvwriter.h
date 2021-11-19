@@ -12,18 +12,16 @@
 #include <QMessageBox>
 #include "Car.h"
 
-#ifndef CSVREADER_H
-#define CSVREADER_H
+#ifndef CSVWRITER_H
+#define CSVWRITER_H
 
-#endif // CSVREADER_H
 
-class CSVReader
+class csvwriter
 {
 private:
     QFile File;
 public:
-    bool openFile(QString FileName);
-
-    std::vector<Car> GetVector();
-
+    bool WriteFile(QString FileName, QTableWidget *Data);
 };
+
+#endif // CSVWRITER_H

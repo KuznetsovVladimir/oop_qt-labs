@@ -18,10 +18,13 @@ public:
 private slots:
     void on_OpenFileButton_clicked();
 
-    void on_lineEdit_2_textChanged(const QString &arg1);
+    void on_lineFind_textChanged(const QString &arg1);
 
     void on_CloseFileButton_clicked();
 
+    void on_WriteButton_clicked();
+
+    void on_WriteFileButton_clicked();
 private:
     Ui::MainWindow *ui;
 };
