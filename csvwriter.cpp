@@ -20,9 +20,7 @@ bool csvwriter::WriteFile(QString FileName, QTableWidget *Data){
     if (!File.open(QIODevice::WriteOnly | QIODevice::Text)) return false;
     QTextStream out(&File);
 
-
     for (int i = 0; i < Data->rowCount(); i++)
-
        out << Data->item(i,0)->text() << ";"<< Data->item(i,1)->text() << ";"<< strToEnum(Data->item(i,2)->text()) << ";"<< Data->item(i,3)->text() << '\n';
     File.close();
     return true;

@@ -23,6 +23,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    error = new QError();
+    error->setTextColor(QColor("red"));
+    ui->verticalLayout->addWidget(error);
 }
 
 MainWindow::~MainWindow()
@@ -34,6 +38,10 @@ MainWindow::~MainWindow()
 void MainWindow::on_OpenFileButton_clicked()
 {
     CSVReader CSV;
+    if (!ui->lineEdit->text().endsWith(".csv")){
+        error->addText("Файл должен иметь расширение '.csv'");
+        return;
+    }
     if (CSV.openFile(ui->lineEdit->text()))
     {
         ui->CloseFileButton->setEnabled(true);
@@ -62,10 +70,8 @@ void MainWindow::on_OpenFileButton_clicked()
         }
     } else
     {
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Ошибка");
-        msgBox.setText("Не удалось открыть файл");
-        msgBox.exec();
+        error->addText("Не удалось открыть файл");
+        return;
     }
 }
 
@@ -115,51 +121,41 @@ void MainWindow::on_CloseFileButton_clicked()
     ui->ComboWriteColor->setEnabled(false);
     ui->WriteButton->setEnabled(false);
     ui->WriteFileButton->setEnabled(false);
+
+    Car::deleteId();
 }
 
 void MainWindow::on_WriteButton_clicked()
 {
     if (ui->lineWriteModel->text() == "")
     {
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Ошибка");
-        msgBox.setText("Не введена модель авто");
-        msgBox.exec();
+        error->addText("Не введена модель авто");
         return;
     }
 
     if (ui->lineWriteYear->text() == "")
     {
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Ошибка");
-        msgBox.setText("Не введен год выпуска авто");
-        msgBox.exec();
+        error->addText("Не введен год выпуска авто");
         return;
     }
 
     if ((ui->lineWriteYear->text()).toInt()<1850)
     {
-        QMessageBox msgBox;
-        msgBox.setWindowTitle("Ошибка");
-        msgBox.setText("Не верно введен год выпуска авто");
-        msgBox.exec();
+        error->addText("Не верно введен год выпуска авто");
         return;
     }
 
-//    if (typeid(ui->lineWriteYear->text()).name() != )
-//    {
-//        QMessageBox msgBox;
-//        msgBox.setWindowTitle("Ошибка");
-//        msgBox.setText("Не введен год выпуска авто");
-//        msgBox.exec();
-//        return;
-//    }
     int tableSize = ui->tableWidget->rowCount();
+    Car newCar;
+    newCar.model = ui->lineWriteModel->text().toStdString();
+    newCar.color = static_cast<colors>(strToEnum(ui->ComboWriteColor->currentText()));
+    newCar.year = ui->lineWriteYear->text().toInt();
+
     ui->tableWidget->insertRow(tableSize);
-    ui->tableWidget->setItem(tableSize,0,new QTableWidgetItem(QString::number(tableSize+1)));
-    ui->tableWidget->setItem(tableSize,1,new QTableWidgetItem(ui->lineWriteModel->text()));
-    ui->tableWidget->setItem(tableSize,2,new QTableWidgetItem(ui->ComboWriteColor->currentText()));
-    ui->tableWidget->setItem(tableSize,3,new QTableWidgetItem(QString::number((ui->lineWriteYear->text()).toInt())));
+    ui->tableWidget->setItem(tableSize,0,new QTableWidgetItem(QString::number(newCar.pos)));
+    ui->tableWidget->setItem(tableSize,1,new QTableWidgetItem(QString::fromStdString(newCar.model)));
+    ui->tableWidget->setItem(tableSize,2,new QTableWidgetItem(newCar.Convert()));
+    ui->tableWidget->setItem(tableSize,3,new QTableWidgetItem(QString::number(newCar.year)));
 
     ui->lineWriteModel->setText("");
     ui->lineWriteYear->setText("");

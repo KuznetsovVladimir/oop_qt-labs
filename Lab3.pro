@@ -10,16 +10,24 @@ CONFIG += c++11
 
 SOURCES += \
     Car.cpp \
+    bus.cpp \
     csvreader.cpp \
     csvwriter.cpp \
+    lightcar.cpp \
+    lorry.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    qerror.cpp
 
 HEADERS += \
     Car.h \
+    bus.h \
     csvreader.h \
     csvwriter.h \
-    mainwindow.h
+    lightcar.h \
+    lorry.h \
+    mainwindow.h \
+    qerror.h
 
 FORMS += \
     mainwindow.ui

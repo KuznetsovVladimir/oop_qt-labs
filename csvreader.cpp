@@ -35,13 +35,8 @@ bool CSVReader::openFile(QString FileName)
     {
         if (FileName.endsWith(".csv"))
             this->File.setFileName(FileName);
-        else
-        {
-            QMessageBox msgBox;
-            msgBox.setWindowTitle("Ошибка");
-            msgBox.setText("Файл должен иметь расширение '.csv'");
-            msgBox.exec();
-        }
+        else return false;
+
         if (!File.open(QIODevice::ReadOnly)) return false;
         else return true;
 
@@ -59,7 +54,12 @@ std::vector<Car> CSVReader::GetVector()
             QString line = in.readLine().toUtf8();
             string str = line.toStdString();
             auto slices = split(str, ';');
-            Cars.push_back({ std::stoi(slices[0]), slices[1], static_cast<colors>(std::stoi(slices[2])), std::stoi(slices[3]) });
+            Car currCar;
+            currCar.model = slices[1];
+            currCar.color = static_cast<colors>(std::stoi(slices[2]));
+            currCar.year = std::stoi(slices[3]);
+
+            Cars.push_back(currCar);
         }
         File.close();
         return Cars;
